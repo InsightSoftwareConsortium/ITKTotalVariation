@@ -3,6 +3,8 @@ project(TotalVariation)
 
 set(TotalVariation_LIBRARIES TotalVariation)
 
+add_subdirectory(ThirdParty/proxTV)
+
 if(NOT ITK_SOURCE_DIR)
   find_package(ITK REQUIRED)
   list(APPEND CMAKE_MODULE_PATH ${ITK_CMAKE_DIR})
