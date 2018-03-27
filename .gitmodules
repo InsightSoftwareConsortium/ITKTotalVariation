@@ -1,0 +1,4 @@
+[submodule "ThirdParty/proxTV"]
+	path = ThirdParty/proxTV
+	url = https://github.com/phcerdan/proxTV
+	branch = cmake_support
