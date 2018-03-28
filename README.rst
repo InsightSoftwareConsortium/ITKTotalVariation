@@ -35,8 +35,9 @@ If using the proxTV python package and python ITK, you can interconnect them:
    reader.Update()
    image = reader.GetOutput()
    image_array = itk.GetArrayViewFromImage(image)
-   norm = 1
-   dimensions_to_penalyze = [1,2,3]
+   lam = 20 # Lambda, denoise strength
+   dimensions_to_penalyze = [1,2,3] # In all 3D directions
+   norm = 1 # Norm used in algorithm, default is 1. || x_{i} - x_{i-1} ||_{norm}
    tv_array = ptv.tvgen(image_array, np.array([lam,lam,lam]), dimensions_to_penalyze, np.array([norm,norm,norm]))
    tv_array = np.ascontiguousarray(tv_array, dtype=image_array.dtype)
    modifiedImage = itk.GetImageViewFromArray(tv_array)
