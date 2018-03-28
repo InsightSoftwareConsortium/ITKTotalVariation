@@ -42,6 +42,15 @@ If using the proxTV python package and python ITK, you can interconnect them:
    modifiedImage = itk.GetImageViewFromArray(tv_array)
    itk.ImageFileWriter.New(Input=modifiedImage, FileName=output_filename).Update()
 
+Example of 3D image denoised
+
+Original:
+
+.. image:: https://user-images.githubusercontent.com/3021667/38002434-9fc35d32-3232-11e8-8bfc-a7d9ce6888c7.png
+
+Denoised:
+
+.. image:: https://user-images.githubusercontent.com/3021667/38002451-b87bed62-3232-11e8-814b-50e8fb0f79cb.png
 
 - [x] Add support for CMake to proxTV. Open PR: <https://github.com/albarji/proxTV/pull/38>
       And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
