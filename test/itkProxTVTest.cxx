@@ -16,42 +16,13 @@
  *
  *=========================================================================*/
 
-#include "itkMyFilter.h"
+#include "itkProxTV.h"
 
 #include "itkCommand.h"
 #include "itkImageFileWriter.h"
 #include "itkTestingMacros.h"
 
-namespace{
-class ShowProgress : public itk::Command
-{
-public:
-  itkNewMacro( ShowProgress );
-
-  void
-  Execute( itk::Object* caller, const itk::EventObject& event ) override
-  {
-    Execute( (const itk::Object*)caller, event );
-  }
-
-  void
-  Execute( const itk::Object* caller, const itk::EventObject& event ) override
-  {
-    if ( !itk::ProgressEvent().CheckEvent( &event ) )
-      {
-      return;
-      }
-    const auto* processObject = dynamic_cast< const itk::ProcessObject* >( caller );
-    if ( !processObject )
-      {
-      return;
-      }
-    std::cout << " " << processObject->GetProgress();
-  }
-};
-}
-
-int itkMyFilterTest( int argc, char * argv[] )
+int itkProxTVTest( int argc, char * argv[] )
 {
   if( argc < 2 )
     {
@@ -66,10 +37,10 @@ int itkMyFilterTest( int argc, char * argv[] )
   using PixelType = float;
   using ImageType = itk::Image< PixelType, Dimension >;
 
-  using FilterType = itk::MyFilter< ImageType, ImageType >;
+  using FilterType = itk::ProxTV< ImageType, ImageType >;
   FilterType::Pointer filter = FilterType::New();
 
-  EXERCISE_BASIC_OBJECT_METHODS( filter, MyFilter, ImageToImageFilter );
+  EXERCISE_BASIC_OBJECT_METHODS( filter, ProxTV, ImageToImageFilter );
 
   // Create input image to avoid test dependencies.
   ImageType::SizeType size;
@@ -78,25 +49,23 @@ int itkMyFilterTest( int argc, char * argv[] )
   image->SetRegions( size );
   image->Allocate();
   image->FillBuffer(1.1f);
-
-  ShowProgress::Pointer showProgress = ShowProgress::New();
-  filter->AddObserver( itk::ProgressEvent(), showProgress );
   filter->SetInput(image);
+  filter->Update();
 
-  typedef itk::ImageFileWriter< ImageType > WriterType;
-  WriterType::Pointer writer = WriterType::New();
-  writer->SetFileName( outputImageFileName );
-  writer->SetInput( filter->GetOutput() );
-  writer->SetUseCompression(true);
-  try
-    {
-    writer->Update();
-    }
-  catch( itk::ExceptionObject & error )
-    {
-    std::cerr << "Error: " << error << std::endl;
-    return EXIT_FAILURE;
-    }
+  // using WriterType = itk::ImageFileWriter< ImageType >;
+  // WriterType::Pointer writer = WriterType::New();
+  // writer->SetFileName( outputImageFileName );
+  // writer->SetInput( filter->GetOutput() );
+  // writer->SetUseCompression(true);
+  // try
+  //   {
+  //   writer->Update();
+  //   }
+  // catch( itk::ExceptionObject & error )
+  //   {
+  //   std::cerr << "Error: " << error << std::endl;
+  //   return EXIT_FAILURE;
+  //   }
 
   return EXIT_SUCCESS;
 }
