@@ -14,7 +14,6 @@ file(READ "${MY_CURRENT_DIR}/README.rst" DOCUMENTATION)
 itk_module(TotalVariation
   DEPENDS
     ITKCommon
-    ITKStatistics
     ITKImageFilterBase
   COMPILE_DEPENDS
     ITKImageSources
