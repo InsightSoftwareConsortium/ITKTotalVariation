@@ -31,8 +31,8 @@ template< typename TInputImage, typename TOutputImage >
 ProxTV< TInputImage, TOutputImage >
 ::ProxTV()
 :m_MaximumNumberOfIterations(10),
- m_Weights(1.0)
- m_Norms(1.0),
+ m_Weights(1.0),
+ m_Norms(1.0)
 {
 }
 
@@ -80,12 +80,17 @@ ProxTV< TInputImage, TOutputImage >
   double* info = nullptr;
   if(ImageDimension == 2)
     {
-    // int DR2_TV(size_t M (rows), size_t N (cols), double*inputProxTV (image), double W1, double W2, double norm1, double norm2, double*s, int nThreads, int maxit, double* info);
-    int r = DR2_TV(regionSize[0], regionSize[1], const_cast<double *>(inputProxTV), m_Weights[0], m_Weights[1], m_Norms[0], m_Norms[1], resultProxTV, nThreads, maxIters, info);
+    // int DR2_TV(size_t M (rows), size_t N (cols), double*inputProxTV (image),
+    // double W1, double W2, double norm1, double norm2, double*s, int nThreads,
+    // int maxit, double* info);
+    int r = DR2_TV(regionSize[0], regionSize[1], const_cast<double *>(inputProxTV),
+        m_Weights[0], m_Weights[1], m_Norms[0], m_Norms[1], resultProxTV, nThreads,
+        maxIters, info);
     }
   else
     {
-    // int PD_TV(double *y,double *lambdas,double *norms,double *dims,double *x,double *info,int *ns,int nds,int npen,int ncores,int maxIters){
+    // int PD_TV(double *y,double *lambdas,double *norms,double *dims,double *x,
+    // double *info,int *ns,int nds,int npen,int ncores,int maxIters){
     double norms[ImageDimension];
     double weights[ImageDimension];
     int elements[ImageDimension];
