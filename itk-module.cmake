@@ -15,6 +15,7 @@ itk_module(TotalVariation
   DEPENDS
     ITKCommon
     ITKImageFilterBase
+    ITKEigen3
   COMPILE_DEPENDS
     ITKImageSources
   TEST_DEPENDS
