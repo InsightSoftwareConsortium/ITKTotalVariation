@@ -3,12 +3,7 @@ set(TotalVariation_SRCS
   )
 
 itk_module_add_library(TotalVariation ${TotalVariation_SRCS})
-# if(NOT TARGET proxTV)
-#   message(WARNING " NO PROXTV TARGET proxTV: proxTV")
-# endif()
-# target_link_libraries(TotalVariation PUBLIC proxTV)
-target_link_libraries(TotalVariation LINK_PUBLIC proxTV::proxTV)
-add_dependencies(TotalVariation proxTV)
+add_dependencies(TotalVariation ${_proxTV_lib})
+target_link_libraries(TotalVariation PUBLIC ${_proxTV_lib})
 itk_module_link_dependencies()
-# add_dependencies(TotalVariation proxTV::proxTV)
 
