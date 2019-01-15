@@ -1,5 +1,5 @@
 set(TotalVariation_SRCS
-  itkProxTV.cxx
+  itkProxTVImageFilter.cxx
   )
 
 itk_module_add_library(TotalVariation ${TotalVariation_SRCS})

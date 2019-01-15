@@ -1,7 +1,7 @@
 itk_module_test()
 
 set(TotalVariationTests
-  itkProxTVTest.cxx
+  itkProxTVImageFilterTest.cxx
   )
 
 set(Libraries ${TotalVariation-Test_LIBRARIES})
@@ -9,12 +9,12 @@ list(APPEND Libraries ${_proxTV_lib})
 
 CreateTestDriver(TotalVariation "${Libraries}" "${TotalVariationTests}")
 
-itk_add_test(NAME itkProxTVTest
+itk_add_test(NAME itkProxTVImageFilterTest
   COMMAND TotalVariationTestDriver
   #   --compare
-  #   ${ITK_TEST_OUTPUT_DIR}/itkProxTVTestOutput.mha
-  #   DATA{Baseline/itkProxTVTestOutput.mha}
-  itkProxTVTest
-    ${ITK_TEST_OUTPUT_DIR}/itkProxTVTestOutput2D.mha
-    ${ITK_TEST_OUTPUT_DIR}/itkProxTVTestOutput3D.mha
+  #   ${ITK_TEST_OUTPUT_DIR}/itkProxTVImageFilterTestOutput.mha
+  #   DATA{Baseline/itkProxTVImageFilterTestOutput.mha}
+  itkProxTVImageFilterTest
+    ${ITK_TEST_OUTPUT_DIR}/itkProxTVImageFilterTestOutput2D.mha
+    ${ITK_TEST_OUTPUT_DIR}/itkProxTVImageFilterTestOutput3D.mha
   )

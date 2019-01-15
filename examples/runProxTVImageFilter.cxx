@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <string>
-#include "itkProxTV.h"
+#include "itkProxTVImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -32,7 +32,7 @@ void run( const std::string & inputImageFileName,
   auto reader = ReaderType::New();
   reader->SetFileName(inputImageFileName);
 
-  using FilterType = itk::ProxTV< ImageType, ImageType >;
+  using FilterType = itk::ProxTVImageFilter< ImageType, ImageType >;
   typename FilterType::Pointer filter = FilterType::New();
   filter->SetInput(reader->GetOutput());
   filter->SetWeights(weight);

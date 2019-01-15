@@ -10,5 +10,5 @@ find_package(ITK REQUIRED COMPONENTS
   CONFIG)
 include(${ITK_USE_FILE})
 
-add_executable(runProxTV ProxTV.cxx)
-target_link_libraries(runProxTV PUBLIC ${ITK_LIBRARIES})
+add_executable(runProxTVImageFilter runProxTVImageFilter.cxx)
+target_link_libraries(runProxTVImageFilter PUBLIC ${ITK_LIBRARIES})

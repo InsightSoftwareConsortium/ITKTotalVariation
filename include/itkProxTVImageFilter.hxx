@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef itkProxTV_hxx
-#define itkProxTV_hxx
+#ifndef itkProxTVImageFilter_hxx
+#define itkProxTVImageFilter_hxx
 
-#include "itkProxTV.h"
+#include "itkProxTVImageFilter.h"
 
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionConstIterator.h"
@@ -28,8 +28,8 @@ namespace itk
 {
 
 template< typename TInputImage, typename TOutputImage >
-ProxTV< TInputImage, TOutputImage >
-::ProxTV()
+ProxTVImageFilter< TInputImage, TOutputImage >
+::ProxTVImageFilter()
 :m_MaximumNumberOfIterations(10),
  m_Weights(1.0),
  m_Norms(1.0)
@@ -39,7 +39,7 @@ ProxTV< TInputImage, TOutputImage >
 
 template< typename TInputImage, typename TOutputImage >
 void
-ProxTV< TInputImage, TOutputImage >
+ProxTVImageFilter< TInputImage, TOutputImage >
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -51,7 +51,7 @@ ProxTV< TInputImage, TOutputImage >
 
 template< typename TInputImage, typename TOutputImage >
 void
-ProxTV< TInputImage, TOutputImage >
+ProxTVImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
   this->AllocateOutputs();
@@ -126,4 +126,4 @@ ProxTV< TInputImage, TOutputImage >
 
 } // end namespace itk
 
-#endif // itkProxTV_hxx
+#endif // itkProxTVImageFilter_hxx
