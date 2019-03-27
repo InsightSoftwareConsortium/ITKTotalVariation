@@ -45,3 +45,6 @@ Denoised:
 - [x] Uses CMake FetchContent to download the third party proxTV.
 - [x] Do the actual wrapping with ITK classes.
 - [x] Profit and use TV methods in C++ with ITK.
+
+Maintainers:
+- Pablo Hernandez-Cerdan @phcerdan https://github.com/phcerdan
