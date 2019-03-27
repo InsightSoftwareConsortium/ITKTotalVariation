@@ -43,6 +43,10 @@ Denoised:
       And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
 - [x] Uses CMake FetchContent to download the third party proxTV.
 - [x] Do the actual wrapping with ITK classes.
+- [ ] Check that python module: itk-totalvariation works for:
+   - [ ] Linux
+   - [ ] Mac
+   - [ ] Windows
 - [x] Profit and use TV methods in C++ with ITK.
 
 Maintainers:
