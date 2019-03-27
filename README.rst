@@ -8,14 +8,10 @@ ITKTotalVariation
 Overview
 --------
 
-TotalVariation algorithms, providing a wrap for the external project: https://github.com/albarji/proxTV
+TotalVariation algorithms. itkProxTVImageFilter provides a wrap for the external project proxTV: https://github.com/albarji/proxTV
 
-ITK is an open-source, cross-platform library that provides developers with an extensive suite of software tools for image analysis. Developed through extreme programming methodologies, ITK employs leading-edge algorithms for registering and segmenting multidimensional scientific images.
-
-**Idea / Work in progress**
-
-Not ready. The motivation is that Total Variation methods from proxTV are pretty effective denoisers.
-If interested, there are python and matlab wraps available from https://github.com/albarji/proxTV .
+The motivation is that Total Variation methods from proxTV are pretty effective denoisers.
+If interested, there are python and matlab wraps directly available from https://github.com/albarji/proxTV .
 If using the proxTV python package and python ITK, you can interconnect them:
 
 .. code-block:: python
@@ -46,6 +42,6 @@ Denoised:
 
 - [x] Add support for CMake to proxTV. Open PR: <https://github.com/albarji/proxTV/pull/38>
       And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
-- [ ] Handle the external project. Choose between add_subdirectory, or ExternalProject_Add. Ask ITK.
-- [ ] Do the actual wrapping with ITK classes.
-- [ ] Profit and use TV methods in C++ with ITK.
+- [x] Uses CMake FetchContent to download the third party proxTV.
+- [x] Do the actual wrapping with ITK classes.
+- [x] Profit and use TV methods in C++ with ITK.
