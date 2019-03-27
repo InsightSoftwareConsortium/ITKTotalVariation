@@ -10,8 +10,7 @@ Overview
 
 TotalVariation algorithms. itkProxTVImageFilter provides a wrap for the external project proxTV: https://github.com/albarji/proxTV
 
-The motivation is that Total Variation methods from proxTV are pretty effective denoisers.
-If interested, there are python and matlab wraps directly available from https://github.com/albarji/proxTV .
+itkProxTVImageFilter provides a wrap around the c-code in proxTV, but the original library provides matlab and python wraps (for linux and mac only at the moment).
 If using the proxTV python package and python ITK, you can interconnect them:
 
 .. code-block:: python
