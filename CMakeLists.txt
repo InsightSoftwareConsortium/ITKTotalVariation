@@ -5,6 +5,8 @@ set(TotalVariation_LIBRARIES TotalVariation)
 
 set(${PROJECT_NAME}_THIRD_PARTY 1)
 
+include(itk-module-init.cmake)
+
 if(NOT ITK_SOURCE_DIR)
   find_package(ITK REQUIRED)
   list(APPEND CMAKE_MODULE_PATH ${ITK_CMAKE_DIR})
@@ -13,11 +15,7 @@ endif()
 include(CMakeParseArguments)
 include(FetchContent)
 
-# This be here, just in case, in the future we switch to use lapack instead of eigen for proxTV.
-option(TotalVariation_proxTV_USE_EIGEN "proxTV in TotalVariation uses EIGEN" ON)
-# Add the option to use Eigen3 from outside, or the internal Eigen3 install in ITK.
-option(ITK_USE_SYSTEM_EIGEN "Uses external Eigen3, when OFF uses the internal Eigen3 from ITK." OFF)
-
+message(STATUS "TotalVariation_proxTV_USE_EIGEN: ${TotalVariation_proxTV_USE_EIGEN}")
 if(TotalVariation_proxTV_USE_EIGEN)
   if(NOT ITK_USE_SYSTEM_EIGEN)
     # Set Eigen3_DIR to the internal ITKEigen3 module.
@@ -43,7 +41,7 @@ else()
   set(proxTV_USE_LAPACK 1)
 endif()
 
-# _proxTV_lib will have `proxTV::proxTV` when find_package, and `proxTV` when add_subdirectory(proxTV_folder)
+# _proxTV_lib will be `proxTV::proxTV` when find_package, and `proxTV` when add_subdirectory(proxTV_folder)
 set(_proxTV_lib "")
 # if proxTV is built elsewhere
 if(ITK_USE_SYSTEM_proxTV)
@@ -99,7 +97,14 @@ find_package(proxTV REQUIRED CONFIG)
 
 # SWIG (wrapping) requires INCLUDE_DIRS
 get_target_property(proxTV_INCLUDE_DIRS ${_proxTV_lib} INTERFACE_INCLUDE_DIRECTORIES)
-set(TotalVariation_INCLUDE_DIRS ${proxTV_INCLUDE_DIRS})
+string(REGEX REPLACE
+  ".*BUILD_INTERFACE:(.*/proxtv_fetch-build/src/include).*"
+  "\\1"
+  proxTV_INCLUDE_DIRS_STRIP
+  ${proxTV_INCLUDE_DIRS})
+message(STATUS "proxTV_INCLUDE_DIRS: ${proxTV_INCLUDE_DIRS}")
+message(STATUS "proxTV_INCLUDE_DIRS_STRIP: ${proxTV_INCLUDE_DIRS_STRIP}")
+set(TotalVariation_INCLUDE_DIRS ${proxTV_INCLUDE_DIRS_STRIP})
 
 # Populate module variables
 if(NOT ITK_SOURCE_DIR)
@@ -109,11 +114,14 @@ else()
   itk_module_impl()
 endif()
 
+
 if(NOT ITK_USE_SYSTEM_proxTV)
   set(arg_module_target "")
   if(CMAKE_VERSION VERSION_LESS 3.13)
     # Hits lack of feature: install TARGETS given target "proxTV" which does not exist in this directory.
+    # Remote Modules do not have to support installing anyway.
     list(APPEND arg_module_target "NO_INSTALL")
   endif()
+  # Add the proxTV library to Modules/Targets/TotalVariationTargets.cmake
   itk_module_target(${_proxTV_lib} ${arg_module_target})
 endif()
