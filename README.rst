@@ -10,26 +10,35 @@ Overview
 
 TotalVariation algorithms. itkProxTVImageFilter provides a wrap for the external project proxTV: https://github.com/albarji/proxTV
 
-itkProxTVImageFilter provides a wrap around the c-code in proxTV, but the original library provides matlab and python wraps (for linux and mac only at the moment).
-If using the proxTV python package and python ITK, you can interconnect them:
+ITK provides wrapping for Windows, macOS and Linux:
 
 .. code-block:: python
 
    import itk
-   import prox_tv as ptv
-   reader = itk.ImageFileReader.New(FileName=input_filename)
+   Dimension = 3
+   I = itk.Image[itk.F, Dimension]
+   # file_name="/tmp/img.nrrd"
+   reader = itk.ImageFileReader[I].New(FileName=file_name)
    reader.Update()
    image = reader.GetOutput()
-   image_array = itk.GetArrayViewFromImage(image)
-   lam = 20 # Lambda, denoise strength
-   dimensions_to_penalyze = [1,2,3] # In all 3D directions
-   norm = 1 # Norm used in algorithm, default is 1. || x_{i} - x_{i-1} ||_{norm}
-   tv_array = ptv.tvgen(image_array, np.array([lam,lam,lam]), dimensions_to_penalyze, np.array([norm,norm,norm]))
-   tv_array = np.ascontiguousarray(tv_array, dtype=image_array.dtype)
-   modifiedImage = itk.GetImageViewFromArray(tv_array)
-   itk.ImageFileWriter.New(Input=modifiedImage, FileName=output_filename).Update()
+   tv = itk.ProxTVImageFilter[I, I].New()
+   tv.SetInput(image)
+   tv.SetMaximumNumberOfIterations(10)
+   tv.SetWeights(100)
+   tv.Update()
+   output_file_name="/tmp/tvout.nrrd"
+   itk.imwrite(tv.GetOutput(), output_file_name)
 
-Example of 3D image denoised
+
+Examples of 3D image denoised
+
+Original:
+
+.. image:: https://user-images.githubusercontent.com/3021667/55841022-95524a00-5afb-11e9-92f1-3743c4ddbf4c.png
+
+TotalVariation denoised:
+
+.. image:: https://user-images.githubusercontent.com/3021667/55841021-94b9b380-5afb-11e9-9961-37072274bd68.png
 
 Original:
 
@@ -44,8 +53,8 @@ Denoised:
 - [x] Uses CMake FetchContent to download the third party proxTV.
 - [x] Do the actual wrapping with ITK classes.
 - [ ] Check that python module: itk-totalvariation works for:
-   - [ ] Linux
-   - [ ] Mac
+   - [x] Linux
+   - [x] Mac
    - [ ] Windows
 - [x] Profit and use TV methods in C++ with ITK.
 
