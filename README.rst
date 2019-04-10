@@ -17,7 +17,6 @@ ITK provides wrapping for Windows, macOS and Linux:
    import itk
    Dimension = 3
    I = itk.Image[itk.F, Dimension]
-   # file_name="/tmp/img.nrrd"
    reader = itk.ImageFileReader[I].New(FileName=file_name)
    reader.Update()
    image = reader.GetOutput()
@@ -28,7 +27,6 @@ ITK provides wrapping for Windows, macOS and Linux:
    tv.Update()
    output_file_name="/tmp/tvout.nrrd"
    itk.imwrite(tv.GetOutput(), output_file_name)
-
 
 Examples of 3D image denoised
 
@@ -52,7 +50,7 @@ Denoised:
       And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
 - [x] Uses CMake FetchContent to download the third party proxTV.
 - [x] Do the actual wrapping with ITK classes.
-- [ ] Check that python module: itk-totalvariation works for:
+- [x] Check that python module: itk-totalvariation works for:
    - [x] Linux
    - [x] Mac
    - [ ] Windows
