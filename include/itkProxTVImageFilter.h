@@ -19,6 +19,7 @@
 #define itkProxTVImageFilter_h
 
 #include "itkImageToImageFilter.h"
+#include "TotalVariationExport.h"
 #include "TVopt.h"
 
 namespace itk
@@ -35,7 +36,7 @@ namespace itk
  *
  */
 template< typename TInputImage, typename TOutputImage >
-class ProxTVImageFilter: public ImageToImageFilter< TInputImage, TOutputImage >
+class TotalVariation_EXPORT ProxTVImageFilter: public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   ITK_DISALLOW_COPY_AND_ASSIGN(ProxTVImageFilter);
