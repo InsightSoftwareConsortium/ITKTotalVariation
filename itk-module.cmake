@@ -24,5 +24,4 @@ itk_module(TotalVariation
   DESCRIPTION
     "${DOCUMENTATION}"
   EXCLUDE_FROM_DEFAULT
-  ENABLE_SHARED
 )
