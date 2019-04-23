@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.10.2)
 project(TotalVariation)
 
-set(TotalVariation_LIBRARIES TotalVariation)
+if(ITK_USE_SYSTEM_proxTV)
+  set(TotalVariation_LIBRARIES proxTV::proxTV)
+else()
+  set(TotalVariation_LIBRARIES proxTV)
+endif()
 
 set(${PROJECT_NAME}_THIRD_PARTY 1)
 
@@ -116,6 +120,7 @@ if(${_populate_include_dirs_for_swig})
   set(TotalVariation_INCLUDE_DIRS ${proxTV_INCLUDE_DIRS_STRIP})
 endif()
 
+
 # Populate module variables
 if(NOT ITK_SOURCE_DIR)
   include(ITKModuleExternal)
@@ -123,6 +128,7 @@ else()
   set(ITK_DIR ${CMAKE_BINARY_DIR})
   itk_module_impl()
 endif()
+
 
 # Add the proxTV library to Modules/Targets/TotalVariationTargets.cmake
 itk_module_target(${_proxTV_lib} NO_INSTALL)
