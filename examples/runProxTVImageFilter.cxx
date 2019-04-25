@@ -16,34 +16,70 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include <string>
 #include "itkProxTVImageFilter.h"
 #include "itkImageFileReader.h"
+#include "itkCastImageFilter.h"
 #include "itkImageFileWriter.h"
+#include "itkImageIOBase.h"
 
 template<typename ImageType>
-void run( const std::string & inputImageFileName,
+int run( const std::string & inputImageFileName,
           const std::string & outputImageFileName,
           const double weight,
           const unsigned int maxIterations)
 {
-  using ReaderType = itk::ImageFileReader<ImageType>;
+  using TVImageType = itk::Image< double, ImageType::ImageDimension >;
+  using ReaderType = itk::ImageFileReader< TVImageType >;
   auto reader = ReaderType::New();
   reader->SetFileName(inputImageFileName);
 
-  using FilterType = itk::ProxTVImageFilter< ImageType, ImageType >;
+  using FilterType = itk::ProxTVImageFilter< TVImageType, TVImageType >;
   typename FilterType::Pointer filter = FilterType::New();
   filter->SetInput(reader->GetOutput());
   filter->SetWeights(weight);
   filter->SetMaximumNumberOfIterations(maxIterations);
-  // filter->Update();
+  filter->Update();
+
+  using CastFilterType = itk::CastImageFilter< TVImageType, ImageType >;
+  typename CastFilterType::Pointer castFilter = CastFilterType::New();
+  castFilter->SetInput( filter->GetOutput() );
 
   using WriterType = itk::ImageFileWriter<ImageType>;
   auto writer = WriterType::New();
-  writer->SetInput(filter->GetOutput());
+  writer->SetInput(castFilter->GetOutput());
   writer->SetFileName(outputImageFileName);
   writer->Update();
+
+  return EXIT_SUCCESS;
+}
+
+template<typename TPixel>
+int runWithDimension( const std::string & inputImageFileName,
+          const std::string & outputImageFileName,
+          const double weight,
+          const unsigned int maxIterations,
+          const unsigned int dimension )
+{
+  using PixelType = TPixel;
+  switch( dimension )
+    {
+  case 2:
+      {
+      using ImageType = itk::Image<PixelType, 2>;
+      return run<ImageType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations);
+      }
+  case 3:
+      {
+      using ImageType = itk::Image<PixelType, 3>;
+      return run<ImageType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations);
+      }
+  default:
+    std::cerr << "Unsupported dimension: " << dimension << std::endl;
+    return EXIT_FAILURE;
+    }
+  return EXIT_FAILURE;
 }
 
 int main(int argc, char *argv[])
@@ -53,8 +89,6 @@ int main(int argc, char *argv[])
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImage";
     std::cerr << " outputImage";
-    std::cerr << " dimension [2|3]";
-    std::cerr << " pixeltype [float|double]";
     std::cerr << " weight";
     std::cerr << " maxIterations";
     std::cerr << std::endl;
@@ -63,53 +97,99 @@ int main(int argc, char *argv[])
 
   const std::string inputImageFileName  = argv[1];
   const std::string outputImageFileName  = argv[2];
-  const unsigned int dim = std::atoi(argv[3]);
-  const std::string pixelType  = argv[4];
-  const double weight  = std::atof(argv[5]);
-  const unsigned int maxIterations  = std::atoi(argv[6]);
-  if(!(dim == 2 || dim == 3))
-    {
-    std::cerr << "dim should be 2 or 3. Actual value: " << dim << std::endl;
-    return EXIT_FAILURE;
-    }
+  const double weight  = std::atof(argv[3]);
+  const unsigned int maxIterations  = std::atoi(argv[4]);
 
-  if(!(pixelType != "float" || pixelType != "double"))
+  itk::ImageIOBase::Pointer imageIO =
+  itk::ImageIOFactory::CreateImageIO(
+    inputImageFileName.c_str(),
+    itk::ImageIOFactory::ReadMode );
+
+  imageIO->SetFileName( inputImageFileName );
+  imageIO->ReadImageInformation();
+
+  using IOComponentType = itk::ImageIOBase::IOComponentType;
+  const IOComponentType componentType = imageIO->GetComponentType();
+
+  const unsigned int imageDimension = imageIO->GetNumberOfDimensions();
+
+  switch( componentType )
     {
-    std::cerr << "pixel type should be float or double. Actual value: " << pixelType << std::endl;
-    return EXIT_FAILURE;
-    }
-  if(dim == 2)
-    {
-    if(pixelType == "float")
+    case itk::ImageIOBase::UCHAR:
+      {
+      using PixelType = unsigned char;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::CHAR:
+      {
+      using PixelType = signed char;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::USHORT:
+      {
+      using PixelType = unsigned short;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::SHORT:
+      {
+      using PixelType = short;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::UINT:
+      {
+      using PixelType = unsigned int;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::INT:
+      {
+      using PixelType = int;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::ULONG:
+      {
+      using PixelType = unsigned long;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::LONG:
+      {
+      using PixelType = long;
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
+      }
+
+    case itk::ImageIOBase::FLOAT:
       {
       using PixelType = float;
-      using ImageType = itk::Image< PixelType, 2 >;
-      run<ImageType>(inputImageFileName, outputImageFileName,
-        weight, maxIterations);
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
       }
-    else
+
+    case itk::ImageIOBase::DOUBLE:
       {
       using PixelType = double;
-      using ImageType = itk::Image< PixelType, 2 >;
-      run<ImageType>(inputImageFileName, outputImageFileName,
-        weight, maxIterations);
+      return runWithDimension<PixelType>(inputImageFileName, outputImageFileName,
+        weight, maxIterations, imageDimension);
       }
+
+    default:
+    case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
+      std::cerr << "Unknown and unsupported component type!" << std::endl;
+      return EXIT_FAILURE;
+
     }
-  else
-    {
-    if(pixelType == "float")
-      {
-      using PixelType = float;
-      using ImageType = itk::Image< PixelType, 3 >;
-      run<ImageType>(inputImageFileName, outputImageFileName,
-        weight, maxIterations);
-      }
-    else
-      {
-      using PixelType = double;
-      using ImageType = itk::Image< PixelType, 3 >;
-      run<ImageType>(inputImageFileName, outputImageFileName,
-        weight, maxIterations);
-      }
-    }
+  return EXIT_FAILURE;
 }
