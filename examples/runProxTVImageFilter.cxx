@@ -84,21 +84,29 @@ int runWithDimension( const std::string & inputImageFileName,
 
 int main(int argc, char *argv[])
 {
-  if( argc < 6 )
+  if( argc < 3 )
     {
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImage";
     std::cerr << " outputImage";
-    std::cerr << " weight";
-    std::cerr << " maxIterations";
+    std::cerr << " [weight]";
+    std::cerr << " [maxIterations]";
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
 
   const std::string inputImageFileName  = argv[1];
   const std::string outputImageFileName  = argv[2];
-  const double weight  = std::atof(argv[3]);
-  const unsigned int maxIterations  = std::atoi(argv[4]);
+  double weight = 1.0;
+  if( argc > 3 )
+    {
+    weight = std::atof(argv[3]);
+    }
+  unsigned int maxIterations = 10;
+  if( argc > 4 )
+    {
+    maxIterations = std::atoi(argv[4]);
+    }
 
   itk::ImageIOBase::Pointer imageIO =
   itk::ImageIOFactory::CreateImageIO(
