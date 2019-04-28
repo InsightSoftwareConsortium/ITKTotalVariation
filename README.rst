@@ -1,9 +1,13 @@
 ITKTotalVariation
-=================================
+=================
 
 .. image:: https://dev.azure.com/InsightSoftwareConsortium/ITKModules/_apis/build/status/InsightSoftwareConsortium.ITKTotalVariation?branchName=master
     :target: https://dev.azure.com/InsightSoftwareConsortium/ITKModules/_build/latest?definitionId=21&branchName=master
     :alt:    Build Status
+
+.. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+    :target: https://github.com/InsightSoftwareConsortium/ITKTotalVariation/blob/master/LICENSE
+    :alt:    License
 
 Overview
 --------
@@ -58,3 +62,11 @@ Denoised:
 
 Maintainers:
 - Pablo Hernandez-Cerdan @phcerdan https://github.com/phcerdan
+
+
+License
+-------
+
+This software is distributed under the Apache 2.0 license. Please see the
+*LICENSE* file for details.
+
