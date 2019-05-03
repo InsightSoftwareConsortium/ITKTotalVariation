@@ -5,9 +5,14 @@ ITKTotalVariation
     :target: https://dev.azure.com/InsightSoftwareConsortium/ITKModules/_build/latest?definitionId=21&branchName=master
     :alt:    Build Status
 
+.. image:: https://img.shields.io/pypi/v/itk-totalvariation.svg
+    :target: https://pypi.python.org/pypi/itk-totalvariation
+    :alt: PyPI
+
 .. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-    :target: https://github.com/InsightSoftwareConsortium/ITKTotalVariation/blob/master/LICENSE
-    :alt:    License
+    :target: https://github.com/InsightSoftwareConsortium/ITKTotalVariation/blob/master/LICENSE)
+    :alt: License
+
 
 Overview
 --------
@@ -49,6 +54,29 @@ Original:
 Denoised:
 
 .. image:: https://user-images.githubusercontent.com/3021667/38002451-b87bed62-3232-11e8-814b-50e8fb0f79cb.png
+
+Installation
+------------
+
+To install the binary Python packages::
+
+  python -m pip install itk-totalvariation
+
+Since ITK 5.0.0, this module is available in the ITK source tree as a remote
+module. To enable it, set::
+
+  Module_TotalVariation:BOOL=ON
+
+in ITK's CMake build configuration.
+
+License
+-------
+
+This software is distributed under the Apache 2.0 license. Please see
+the *LICENSE* file for details.
+
+Todo
+----
 
 - [x] Add support for CMake to proxTV. Open PR: <https://github.com/albarji/proxTV/pull/38>
       And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
