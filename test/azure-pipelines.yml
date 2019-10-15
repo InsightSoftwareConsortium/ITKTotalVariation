@@ -210,7 +210,7 @@ jobs:
       set ITK_PACKAGE_VERSION=$(ITKPythonGitTag)
       set CC=cl.exe
       set CXX=cl.exe
-      Start-Process powershell.exe -Verb Runas -ArgumentList "-File .\windows-download-cache-and-build-module-wheels.ps1"
+      powershell.exe -file .\windows-download-cache-and-build-module-wheels.ps1
     displayName: 'Build Python packages'
 
   - task: PublishPipelineArtifact@0
