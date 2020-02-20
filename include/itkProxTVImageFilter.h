@@ -34,8 +34,8 @@ namespace itk
  * \ingroup TotalVariation
  *
  */
-template< typename TInputImage, typename TOutputImage >
-class ProxTVImageFilter: public ImageToImageFilter< TInputImage, TOutputImage >
+template <typename TInputImage, typename TOutputImage>
+class ProxTVImageFilter : public ImageToImageFilter<TInputImage, TOutputImage>
 {
 public:
   ITK_DISALLOW_COPY_AND_ASSIGN(ProxTVImageFilter);
@@ -50,16 +50,16 @@ public:
   using ArrayType = itk::FixedArray<double, ImageDimension>;
 
   /** Standard class typedefs. */
-  using Self = ProxTVImageFilter< InputImageType, OutputImageType >;
-  using Superclass = ImageToImageFilter< InputImageType, OutputImageType >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using Self = ProxTVImageFilter<InputImageType, OutputImageType>;
+  using Superclass = ImageToImageFilter<InputImageType, OutputImageType>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
 
   /** Run-time type information. */
-  itkTypeMacro( ProxTVImageFilter, ImageToImageFilter );
+  itkTypeMacro(ProxTVImageFilter, ImageToImageFilter);
 
   /** Standard New macro. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Set/Get the MaximumNumberOfIterations */
   itkSetMacro(MaximumNumberOfIterations, unsigned int);
@@ -77,11 +77,13 @@ protected:
   ProxTVImageFilter();
   virtual ~ProxTVImageFilter() override {}
 
-  void PrintSelf( std::ostream& os, Indent indent ) const override;
+  void
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   typedef typename OutputImageType::RegionType OutputRegionType;
 
-  virtual void GenerateData() override;
+  virtual void
+  GenerateData() override;
 
 private:
   unsigned int m_MaximumNumberOfIterations;
@@ -93,14 +95,13 @@ private:
   /** ImageDimension enumeration   */
   static constexpr unsigned int InputImageDimension = TInputImage::ImageDimension;
   static constexpr unsigned int OutputImageDimension = TOutputImage::ImageDimension;
-  itkConceptMacro( SameDimensionCheck,
-      ( Concept::SameDimension< InputImageDimension, OutputImageDimension > ) );
+  itkConceptMacro(SameDimensionCheck, (Concept::SameDimension<InputImageDimension, OutputImageDimension>));
 #endif
 };
-}
+} // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkProxTVImageFilter.hxx"
+#  include "itkProxTVImageFilter.hxx"
 #endif
 
 #endif // itkProxTVImageFilter

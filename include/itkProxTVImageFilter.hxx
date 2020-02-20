@@ -27,35 +27,31 @@
 namespace itk
 {
 
-template< typename TInputImage, typename TOutputImage >
-ProxTVImageFilter< TInputImage, TOutputImage >
-::ProxTVImageFilter()
-:m_MaximumNumberOfIterations(10),
- m_Weights(1.0),
- m_Norms(1.0)
-{
-}
+template <typename TInputImage, typename TOutputImage>
+ProxTVImageFilter<TInputImage, TOutputImage>::ProxTVImageFilter()
+  : m_MaximumNumberOfIterations(10)
+  , m_Weights(1.0)
+  , m_Norms(1.0)
+{}
 
 
-template< typename TInputImage, typename TOutputImage >
+template <typename TInputImage, typename TOutputImage>
 void
-ProxTVImageFilter< TInputImage, TOutputImage >
-::PrintSelf( std::ostream& os, Indent indent ) const
+ProxTVImageFilter<TInputImage, TOutputImage>::PrintSelf(std::ostream & os, Indent indent) const
 {
-  Superclass::PrintSelf( os, indent );
+  Superclass::PrintSelf(os, indent);
   os << indent << "MaximumNumberOfIterations: " << m_MaximumNumberOfIterations << std::endl;
   os << indent << "Weights: " << m_Weights << std::endl;
   os << indent << "Norms: " << m_Norms << std::endl;
 }
 
 
-template< typename TInputImage, typename TOutputImage >
+template <typename TInputImage, typename TOutputImage>
 void
-ProxTVImageFilter< TInputImage, TOutputImage >
-::GenerateData()
+ProxTVImageFilter<TInputImage, TOutputImage>::GenerateData()
 {
   this->AllocateOutputs();
-  OutputImageType * output = this->GetOutput();
+  OutputImageType *      output = this->GetOutput();
   const InputImageType * input = this->GetInput();
   using InputRegionType = typename InputImageType::RegionType;
   auto regionSize = output->GetLargestPossibleRegion().GetSize();
@@ -70,52 +66,59 @@ ProxTVImageFilter< TInputImage, TOutputImage >
   auto resultImage = DoubleImageType::New();
   resultImage->SetRegions(output->GetLargestPossibleRegion());
   resultImage->Allocate();
-  resultImage->CopyInformation( input );
+  resultImage->CopyInformation(input);
 
   /************ proxTV *************/
 
-  const double* inputProxTV = inputCastFilter->GetOutput()->GetBufferPointer();
-  double* resultProxTV = resultImage->GetBufferPointer();
-  int nThreads = itk::MultiThreaderBase::GetGlobalDefaultNumberOfThreads();
-  int maxIters = m_MaximumNumberOfIterations;
-  double* info = nullptr;
-  if(ImageDimension == 2)
-    {
+  const double * inputProxTV = inputCastFilter->GetOutput()->GetBufferPointer();
+  double *       resultProxTV = resultImage->GetBufferPointer();
+  int            nThreads = itk::MultiThreaderBase::GetGlobalDefaultNumberOfThreads();
+  int            maxIters = m_MaximumNumberOfIterations;
+  double *       info = nullptr;
+  if (ImageDimension == 2)
+  {
     // int DR2_TV(size_t M (rows), size_t N (cols), double*inputProxTV (image),
     // double W1, double W2, double norm1, double norm2, double*s, int nThreads,
     // int maxit, double* info);
-    int r = DR2_TV(regionSize[0], regionSize[1], const_cast<double *>(inputProxTV),
-        m_Weights[0], m_Weights[1], m_Norms[0], m_Norms[1], resultProxTV, nThreads,
-        maxIters, info);
-    }
+    int r = DR2_TV(regionSize[0],
+                   regionSize[1],
+                   const_cast<double *>(inputProxTV),
+                   m_Weights[0],
+                   m_Weights[1],
+                   m_Norms[0],
+                   m_Norms[1],
+                   resultProxTV,
+                   nThreads,
+                   maxIters,
+                   info);
+  }
   else
-    {
+  {
     // int PD_TV(double *y,double *lambdas,double *norms,double *dims,double *x,
     // double *info,int *ns,int nds,int npen,int ncores,int maxIters){
     double norms[ImageDimension];
     double weights[ImageDimension];
-    int elements[ImageDimension];
+    int    elements[ImageDimension];
     double dims[ImageDimension]; // [1, 2, ..., N]
     for (unsigned int i = 0; i < ImageDimension; ++i)
-      {
+    {
       weights[i] = m_Weights[i];
       norms[i] = m_Norms[i];
       elements[i] = regionSize[i];
       dims[i] = i + 1;
-      }
-    int r = PD_TV(
-      const_cast<double *>(inputProxTV),
-      weights,
-      norms,
-      dims /* Apply weights in these dims */,
-      resultProxTV,
-      info,
-      elements,
-      ImageDimension /* Number of penalty terms */,
-      ImageDimension /* Number of dimensions */,
-      nThreads,
-      maxIters);
     }
+    int r = PD_TV(const_cast<double *>(inputProxTV),
+                  weights,
+                  norms,
+                  dims /* Apply weights in these dims */,
+                  resultProxTV,
+                  info,
+                  elements,
+                  ImageDimension /* Number of penalty terms */,
+                  ImageDimension /* Number of dimensions */,
+                  nThreads,
+                  maxIters);
+  }
 
   using CastDoubleToOutputImageFilter = itk::CastImageFilter<DoubleImageType, OutputImageType>;
   auto outputCastFilter = CastDoubleToOutputImageFilter::New();
