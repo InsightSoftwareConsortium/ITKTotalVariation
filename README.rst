@@ -72,17 +72,6 @@ in ITK's CMake build configuration.
 License
 -------
 
-This software is distributed under the Apache 2.0 license. Please see
-the *LICENSE* file for details.
-
-Maintainers:
-
-- Pablo Hernandez-Cerdan @phcerdan https://github.com/phcerdan
-
-
-License
--------
-
 This software is distributed under the Apache 2.0 license. Please see the
 *LICENSE* file for details.
 
