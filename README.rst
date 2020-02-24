@@ -75,19 +75,6 @@ License
 This software is distributed under the Apache 2.0 license. Please see
 the *LICENSE* file for details.
 
-Todo
-----
-
-- [x] Add support for CMake to proxTV. Open PR: <https://github.com/albarji/proxTV/pull/38>
-      And the branch in my fork: <https://github.com/phcerdan/proxTV/tree/cmake_support>
-- [x] Uses CMake FetchContent to download the third party proxTV.
-- [x] Do the actual wrapping with ITK classes.
-- [x] Check that python module: itk-totalvariation works for:
-   - [x] Linux
-   - [x] Mac
-   - [ ] Windows
-- [x] Profit and use TV methods in C++ with ITK.
-
 Maintainers:
 
 - Pablo Hernandez-Cerdan @phcerdan https://github.com/phcerdan
