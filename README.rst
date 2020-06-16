@@ -1,9 +1,7 @@
 ITKTotalVariation
 =================
 
-.. image:: https://dev.azure.com/InsightSoftwareConsortium/ITKModules/_apis/build/status/InsightSoftwareConsortium.ITKTotalVariation?branchName=master
-    :target: https://dev.azure.com/InsightSoftwareConsortium/ITKModules/_build/latest?definitionId=21&branchName=master
-    :alt:    Build Status
+.. image:: https://github.com/InsightSoftwareConsortium/ITKTotalVariation/workflows/Build,%20test,%20package/badge.svg
 
 .. image:: https://img.shields.io/pypi/v/itk-totalvariation.svg
     :target: https://pypi.python.org/pypi/itk-totalvariation
