@@ -13,7 +13,7 @@ except ImportError:
 
 setup(
     name='itk-totalvariation',
-    version='0.2.2',
+    version='0.2.3',
     author='Pablo Hernandez-Cerdan',
     author_email='pablo.hernandez.cerdan@outlook.com',
     packages=['itk'],
@@ -44,6 +44,6 @@ setup(
     keywords='ITK InsightToolkit',
     url=r'https://itk.org/',
     install_requires=[
-        r'itk>=5.2.0.post2'
+        r'itk==5.3.0'
     ]
-    )
+)
