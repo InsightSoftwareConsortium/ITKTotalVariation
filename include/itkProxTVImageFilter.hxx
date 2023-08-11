@@ -27,14 +27,6 @@ namespace itk
 {
 
 template <typename TInputImage, typename TOutputImage>
-ProxTVImageFilter<TInputImage, TOutputImage>::ProxTVImageFilter()
-  : m_MaximumNumberOfIterations(10)
-  , m_Weights(1.0)
-  , m_Norms(1.0)
-{}
-
-
-template <typename TInputImage, typename TOutputImage>
 void
 ProxTVImageFilter<TInputImage, TOutputImage>::PrintSelf(std::ostream & os, Indent indent) const
 {
@@ -52,7 +44,7 @@ ProxTVImageFilter<TInputImage, TOutputImage>::GenerateData()
   this->AllocateOutputs();
   OutputImageType *      output = this->GetOutput();
   const InputImageType * input = this->GetInput();
-  auto regionSize = output->GetLargestPossibleRegion().GetSize();
+  auto                   regionSize = output->GetLargestPossibleRegion().GetSize();
 
   using DoubleImageType = itk::Image<double, ImageDimension>;
 
