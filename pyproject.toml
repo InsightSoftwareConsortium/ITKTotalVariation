@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "itk-totalvariation"
-version = "1.0.0"
+version = "1.0.1"
 description = "TotalVariation algorithms, providing a wrap for the external project: https://github.com/albarji/proxTV"
 readme = "README.rst"
 license = {file = "LICENSE"}
