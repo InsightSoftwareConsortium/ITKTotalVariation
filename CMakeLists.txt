@@ -35,12 +35,14 @@ if(TotalVariation_proxTV_USE_EIGEN)
   find_package(Eigen3 REQUIRED)
   set(${PROJECT_NAME}_EXPORT_CODE_INSTALL
 "${${PROJECT_NAME}_EXPORT_CODE_INSTALL}
+find_package(OpenMP)
 set(Eigen3_DIR \"${Eigen3_DIR}\")
 find_package(Eigen3 REQUIRED CONFIG)
 ")
   set(${PROJECT_NAME}_EXPORT_CODE_BUILD
 "${${PROJECT_NAME}_EXPORT_CODE_BUILD}
 if(NOT ITK_BINARY_DIR)
+  find_package(OpenMP)
   set(Eigen3_DIR \"${Eigen3_DIR}\")
   find_package(Eigen3 REQUIRED CONFIG)
 endif()
@@ -63,6 +65,7 @@ if(ITK_USE_SYSTEM_proxTV)
   set(${PROJECT_NAME}_EXPORT_CODE_BUILD
 "${${PROJECT_NAME}_EXPORT_CODE_BUILD}
 if(NOT ITK_BINARY_DIR)
+  find_package(OpenMP)
   set(proxTV_DIR \"${proxTV_DIR_BUILD}\")
   find_package(proxTV REQUIRED CONFIG)
 endif()
@@ -119,6 +122,7 @@ endif()
 # When this module is loaded by an app, load proxTV too.
 set(${PROJECT_NAME}_EXPORT_CODE_INSTALL
 "${${PROJECT_NAME}_EXPORT_CODE_INSTALL}
+find_package(OpenMP)
 set(proxTV_DIR \"${proxTV_DIR_INSTALL}\")
 find_package(proxTV REQUIRED CONFIG)
 ")
