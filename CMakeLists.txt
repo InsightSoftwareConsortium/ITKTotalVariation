@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.16.2)
 project(TotalVariation)
 
 if(ITK_USE_SYSTEM_proxTV)
@@ -35,12 +35,14 @@ if(TotalVariation_proxTV_USE_EIGEN)
   find_package(Eigen3 REQUIRED)
   set(${PROJECT_NAME}_EXPORT_CODE_INSTALL
 "${${PROJECT_NAME}_EXPORT_CODE_INSTALL}
+find_package(OpenMP)
 set(Eigen3_DIR \"${Eigen3_DIR}\")
 find_package(Eigen3 REQUIRED CONFIG)
 ")
   set(${PROJECT_NAME}_EXPORT_CODE_BUILD
 "${${PROJECT_NAME}_EXPORT_CODE_BUILD}
 if(NOT ITK_BINARY_DIR)
+  find_package(OpenMP)
   set(Eigen3_DIR \"${Eigen3_DIR}\")
   find_package(Eigen3 REQUIRED CONFIG)
 endif()
@@ -63,6 +65,7 @@ if(ITK_USE_SYSTEM_proxTV)
   set(${PROJECT_NAME}_EXPORT_CODE_BUILD
 "${${PROJECT_NAME}_EXPORT_CODE_BUILD}
 if(NOT ITK_BINARY_DIR)
+  find_package(OpenMP)
   set(proxTV_DIR \"${proxTV_DIR_BUILD}\")
   find_package(proxTV REQUIRED CONFIG)
 endif()
@@ -109,10 +112,7 @@ else() # build proxTV here with the selected Eigen3
   endif()
   # end proxTV options
 
-  if(NOT proxtv_fetch_POPULATED)
-    FetchContent_Populate(proxTV_fetch)
-    add_subdirectory(${proxtv_fetch_SOURCE_DIR} ${proxtv_fetch_BINARY_DIR})
-  endif()
+  FetchContent_MakeAvailable(proxTV_fetch)
   # proxTV will generate a target proxTV::proxTV when using find_package,
   # or a library proxTV when using add_subdirectory
   set(_proxTV_lib proxTV) # proxTV generated in subdirectory
@@ -122,6 +122,7 @@ endif()
 # When this module is loaded by an app, load proxTV too.
 set(${PROJECT_NAME}_EXPORT_CODE_INSTALL
 "${${PROJECT_NAME}_EXPORT_CODE_INSTALL}
+find_package(OpenMP)
 set(proxTV_DIR \"${proxTV_DIR_INSTALL}\")
 find_package(proxTV REQUIRED CONFIG)
 ")
